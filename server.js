@@ -4,8 +4,22 @@ const express     = require('express');
 const bodyParser  = require('body-parser');
 const fccTesting  = require('./freeCodeCamp/fcctesting.js');
 const pug = require('pug');
+const session = require('express-session');
+const passport = require('passport');
+const dotEnv = require('dotenv');
+dotEnv.config();
+
 
 const app = express();
+app.use(session(
+  {
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUnitialized: true
+  }));
+
+
+
 app.set('view engine')
 
 
