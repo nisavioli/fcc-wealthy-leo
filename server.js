@@ -29,12 +29,6 @@ app.use('/public', express.static(process.cwd() + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.route('/')
-  .get((req, res) => {
-    res.render(process.cwd() + '/views/pug/index.pug', {title: 'Hello', message: 'Please Login'});
-  });
-
-
 mongodb.connect(process.env.DATABASE, (err, db) =>
 {
   if(err)
@@ -43,6 +37,14 @@ mongodb.connect(process.env.DATABASE, (err, db) =>
   }
   else
   {
+
+app.route('/')
+  .get((req, res) => {
+    res.render(process.cwd() + '/views/pug/index.pug', {title: 'Hello', message: 'Please Login'});
+  });
+
+
+
     console.log('Successful database connection')
     passport.serializeUser((user, done) =>
     {
