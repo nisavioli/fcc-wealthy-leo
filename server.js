@@ -6,7 +6,7 @@ const fccTesting  = require('./freeCodeCamp/fcctesting.js');
 const pug = require('pug');
 
 const app = express();
-app.set('view engine', 'pug');
+app.set('view engine')
 
 
 fccTesting(app); //For FCC testing purposes
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.route('/')
   .get((req, res) => {
-    res.render('../views/pug/index.pug');
+    res.render(process.cwd() + '/views/pug/index.pug', {title: 'Hello', message: 'Please Login'});
   });
 
 app.listen(process.env.PORT || 3000, () => {
