@@ -3,10 +3,11 @@
 const express     = require('express');
 const bodyParser  = require('body-parser');
 const fccTesting  = require('./freeCodeCamp/fcctesting.js');
-const pug = require('pug');
-const session = require('express-session');
-const passport = require('passport');
-const dotEnv = require('dotenv');
+const ObjectID    = require('mongodb').ObjectID;
+const pug         = require('pug');
+const session     = require('express-session');
+const passport    = require('passport');
+const dotEnv      = require('dotenv');
 dotEnv.config();
 
 
@@ -20,7 +21,21 @@ app.use(session(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+passport.serializeUser((user, done) =>
+{
+  done(null, user._id);
+});
+passport.deserializeUser((id, done) =>
+{
+  // db.collection('users').findOne(
+  //   {_id: new ObjectID(id)},
+  //   (err, doc) => 
+  //   {
+  //     done(null, doc);
+  //   }
+  // );
+  done(null, null);
+})
 
 app.set('view engine')
 
