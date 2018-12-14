@@ -17,6 +17,7 @@ app.use(session(
     resave: true,
     saveUnitialized: true
   }));
+app.use(passport.initialize());
 
 
 
