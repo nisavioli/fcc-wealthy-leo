@@ -22,10 +22,7 @@ app.use(session(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
-app.set('view engine')
-
+app.set('view engine');
 
 fccTesting(app); //For FCC testing purposes
 app.use('/public', express.static(process.cwd() + '/public'));
@@ -46,6 +43,7 @@ mongodb.connect(process.env.DATABASE, (err, db) =>
   }
   else
   {
+    console.log('Successful database connection')
     passport.serializeUser((user, done) =>
     {
       done(null, user._id);
@@ -61,7 +59,7 @@ mongodb.connect(process.env.DATABASE, (err, db) =>
       );
     });
     app.listen(process.env.PORT || 3000, () => {
-      console.log("Listening on port " + process.env.PORT);
+      console.log("Listening on port " + (process.env.PORT || 3000));
     });
   }
 });
