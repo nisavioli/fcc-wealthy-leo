@@ -80,7 +80,8 @@ mongo.connect(process.env.DATABASE, (err, db) =>
           {
             title: 'Home Page',
             message: 'Please Login',
-            showLogin: true
+            showLogin: true,
+            showRegistration: true
           }
         );
       });
@@ -118,7 +119,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
         res.redirect('/');
       }
     );
-    app.route('register')
+    app.route('/register')
       .post((req, res, next) =>
       {
         db.collection('users')
@@ -144,7 +145,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
           passport.authenticate('local', { failureRedirect: '/'}),
           (req, res, next) =>
           {
-            res.redirect('/profile');
+            res.redirect('/profile')
           }
       );
 
