@@ -76,11 +76,46 @@ mongo.connect(process.env.DATABASE, (err, db) =>
     app.route('/')
       .get((req, res) => 
       {
-        res.render(process.cwd() + '/views/pug/index.pug', {title: 'Hello', message: 'Please Login'});
+        res.render(process.cwd() + '/views/pug/index.pug',
+          {
+            title: 'Hello',
+            message: 'Please Login',
+            showLogin: true
+          }
+        );
       });
-    
-      console.log(db);
+    let passportAuthOpts = 
+    {
+      failureRedirect: '/',
+      failureFlash: true
+    };
 
+    app.route('/login')
+      .post(passport.authenticate('local', passportAuthOpts), 
+        (req, res) =>
+        {
+          res.redirect(`/profile/${req.user._id}`);
+        }
+      );
+
+    app.route('/profile/:userId')
+        .get((req, res) =>
+        {
+          passport.deserializeUser(req.params.userId, 
+          (err, user) => 
+          {
+            if (err) 
+            { 
+              console.log('Failed to deserilize user with id ' + req.params.userId);
+              res.redirect('/');
+            }
+            else
+            {
+              res.render(process.cwd() + '/views/pug/profile.pug', user);
+            }
+          });
+          // db.collection('users').findOne({_id: req.params.user})
+        });
     app.listen(process.env.PORT || 3000, () => {
       console.log("Listening on port " + (process.env.PORT || 3000));
     });
