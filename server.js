@@ -86,15 +86,15 @@ mongo.connect(process.env.DATABASE, (err, db) =>
       });
     let passportAuthOpts = 
     {
-      failureRedirect: '/',
-      failureFlash: true
+      failureRedirect: '/'
     };
 
     app.route('/login')
       .post(passport.authenticate('local', passportAuthOpts), 
         (req, res) =>
         {
-          res.redirect(`/profile/${req.user._id}`);
+          res.redirect('/');
+          // res.redirect(`/profile/${req.user._id}`);
         }
       );
 
@@ -114,7 +114,6 @@ mongo.connect(process.env.DATABASE, (err, db) =>
               res.render(process.cwd() + '/views/pug/profile.pug', user);
             }
           });
-          // db.collection('users').findOne({_id: req.params.user})
         });
     app.listen(process.env.PORT || 3000, () => {
       console.log("Listening on port " + (process.env.PORT || 3000));
