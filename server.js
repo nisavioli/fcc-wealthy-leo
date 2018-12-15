@@ -100,7 +100,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
       .post(passport.authenticate('local', passportAuthOpts), 
         (req, res) =>
         {
-          res.redirect('/')
+          res.redirect('/profile');
         }
       );
 
