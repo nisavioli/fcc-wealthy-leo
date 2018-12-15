@@ -109,7 +109,9 @@ mongo.connect(process.env.DATABASE, (err, db) =>
         ensureAuthenticated,
         (req, res) =>
         {
-          res.render(process.cwd() + '/views/pug/profile.pug', {username: req.user.username});
+          const username = req.session.username;
+          delete req.session.username;
+          res.render(process.cwd() + '/views/pug/profile.pug', {username: username});
         }
       );
     app.route('/logout')
@@ -145,6 +147,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
           passport.authenticate('local', { failureRedirect: '/'}),
           (req, res, next) =>
           {
+            req.session.username = req.user.username;
             res.redirect('/profile');
           }
       );
