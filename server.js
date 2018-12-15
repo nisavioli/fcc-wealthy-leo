@@ -93,7 +93,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
     {
       if (req.isAuthenticated()) { return next(); }
       res.redirect('/');
-    }
+    };
 
     app.route('/login')
       .post(passport.authenticate('local', passportAuthOpts), 
