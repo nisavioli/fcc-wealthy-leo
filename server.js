@@ -99,7 +99,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
       .post(passport.authenticate('local', passportAuthOpts), 
         (req, res) =>
         {
-          res.redirect('/');
+          res.redirect('/profile');
         }
       );
 
@@ -108,7 +108,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
           ensureAuthenticated,
           (req, res) =>
           {
-            res.render(process.cwd() + '/views/pug/profile.pug', user);
+            res.render(process.cwd() + '/views/pug/profile.pug');
           }
         );
     app.listen(process.env.PORT || 3000, () => {
