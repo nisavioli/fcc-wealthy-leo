@@ -21,7 +21,8 @@
 		"passport": "^0.3.2",
 		"passport-local": "^1.0.0",
 		"express-session": "^1.15.6",
-		"dotenv": "~6.2.0"
+		"dotenv": "~6.2.0",
+		"bcrypt": "^3.0.2"
 	},
 	"engines": {
 		"node": "4.4.3"

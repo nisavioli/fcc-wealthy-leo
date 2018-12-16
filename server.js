@@ -9,6 +9,7 @@ const pug           = require('pug');
 const session       = require('express-session');
 const passport      = require('passport');
 const LocalStrategy = require('passport-local');
+const bcrypt        = require('bcrypt');
 const dotEnv        = require('dotenv');
 dotEnv.config();
 const app = express();
@@ -67,12 +68,13 @@ mongo.connect(process.env.DATABASE, (err, db) =>
           console.log('User ' + username + ' attempted to log in.');
           if (err) { return done(err); }
           if (!user) { return done(null, false); }
-          if (password !== user.password) { return done(null, false); }
+          if (!bcrypt.compareSync(password, user.password)) { return done(null, false); }
           return done(null, user);
         });
       }
     ));
 
+    //#region delays for testing -------------------------------------
     // Delays need to be added for tests to pass
     if (process.env.ENABLE_DELAYS) app.use((req, res, next) =>
     {
@@ -96,7 +98,8 @@ mongo.connect(process.env.DATABASE, (err, db) =>
         default: next();
       }
     });
-
+    //#endregion
+    //----------------------------------------------------------------
     app.route('/')
       .get((req, res) => 
       {
@@ -133,7 +136,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
         ensureAuthenticated,
         (req, res) =>
         {
-          console.log(req.user);
+          // console.log(req.user);
           const username = req.user.username;
           res.render(process.cwd() + '/views/pug/profile.pug', {username: username});
         }
@@ -153,13 +156,14 @@ mongo.connect(process.env.DATABASE, (err, db) =>
           (err, user) =>
           {
             if(err) { next(err); }
-            else if (user) { res.redirect('/'); }  // Had to remove to pass tests
+            else if (user) { res.redirect('/'); }
             else
             {
+              const hash = bcrypt.hashSync(req.body.password, 12);
               db.collection('users')
                 .insertOne(
                 {username: req.body.username,
-                 password: req.body.password},
+                 password: hash},
                  (err, doc) =>
                  {
                    if(err) { res.redirect('/'); }
