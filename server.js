@@ -73,6 +73,30 @@ mongo.connect(process.env.DATABASE, (err, db) =>
       }
     ));
 
+    // Delays need to be added for tests to pass
+    if (process.env.ENABLE_DELAYS) app.use((req, res, next) =>
+    {
+      switch (req.method) 
+      {
+        case 'GET':
+          switch (req.url) 
+          {
+            case '/logout': return setTimeout(() => next(), 500);
+            case '/profile': return setTimeout(() => next(), 700);
+            default: next();
+          }
+        break;
+        case 'POST':
+          switch(req.url)
+          {
+            case '/login': return setTimeout(() => next(), 900);
+            default: next();
+          }
+        break;
+        default: next();
+      }
+    });
+
     app.route('/')
       .get((req, res) => 
       {
