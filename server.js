@@ -109,8 +109,8 @@ mongo.connect(process.env.DATABASE, (err, db) =>
         ensureAuthenticated,
         (req, res) =>
         {
-          const username = req.session.username;
-          delete req.session.username;
+          console.log(req.user);
+          const username = req.user.username;
           res.render(process.cwd() + '/views/pug/profile.pug', {username: username});
         }
       );
@@ -129,7 +129,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
           (err, user) =>
           {
             if(err) { next(err); }
-            // else if (user) { res.redirect('/'); }  // Had to remove to pass tests
+            else if (user) { res.redirect('/'); }  // Had to remove to pass tests
             else
             {
               db.collection('users')
