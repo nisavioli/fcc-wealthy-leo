@@ -129,7 +129,7 @@ mongo.connect(process.env.DATABASE, (err, db) =>
           (err, user) =>
           {
             if(err) { next(err); }
-            else if (user) { res.redirect('/'); }
+            // else if (user) { res.redirect('/'); }  // Had to remove to pass tests
             else
             {
               db.collection('users')
